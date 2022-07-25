@@ -276,8 +276,23 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  let arrCNN = ccn.toString().split('').map((val) => +val);
+  const len = arrCNN.length;
+  const isEven = len % 2 === 0;
+
+  arrCNN = arrCNN.map((val, index) => {
+    if ((isEven && index % 2 === 0) || (!isEven && index % 2 !== 0)) {
+      let number = val * 2;
+      if (number > 9) {
+        number = (number % 10) + 1;
+      }
+      return number;
+    }
+    return val;
+  });
+
+  return arrCNN.reduce((acc, val) => acc + val) % 10 === 0;
 }
 
 /**
@@ -294,8 +309,14 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  let root = num;
+  do {
+    const numArr = root.toString().split('').map((val) => +val);
+    root = numArr.reduce((acc, val) => acc + val);
+  } while (root > 9);
+
+  return root;
 }
 
 
@@ -320,8 +341,16 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const brackets = [['[', ']'], ['(', ')'], ['{', '}'], ['<', '>']];
+  const stack = [];
+  for (let i = 0; i < str.length; i += 1) {
+    const element = brackets.find((el) => el[0] === str[i]);
+    if (element) {
+      stack.push(element);
+    } else if (stack.length === 0 || stack.pop()[1] !== str[i]) return false;
+  }
+  return stack.length === 0;
 }
 
 
@@ -345,8 +374,8 @@ function isBracketsBalanced(/* str */) {
  *    365, 4  => '11231'
  *    365, 10 => '365'
  */
-function toNaryString(/* num, n */) {
-  throw new Error('Not implemented');
+function toNaryString(num, n) {
+  return num.toString(n);
 }
 
 
